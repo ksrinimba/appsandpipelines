@@ -35,5 +35,12 @@
       },
       "type": "deployManifest"
     }
+  ],
+  "triggers": [
+    {
+      "cronExpression": "0 0/10 * 1/1 * ? *",
+      "enabled": true,
+      "type": "cron"
+    }
   ]
 }
