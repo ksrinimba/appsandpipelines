@@ -7,8 +7,8 @@ do
   do
     pipeName="pipe$j"
     fileName="$appName-$pipeName"
-    jqStr=".application = \"$appName\"|.name = \"$pipeName\""
-    cat base-pipe.json | jq "$jqStr" > ../pipelines/$fileName.json
+
+    echo spin application save -f $fileName --config config
   done  
 done  
 
