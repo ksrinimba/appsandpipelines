@@ -1,0 +1,7 @@
+auth:
+  basic:
+    password: saporadmin
+    username: srinivas@opsmx.io
+  enabled: true
+gate:
+  endpoint: http://sapor-gate:8084
