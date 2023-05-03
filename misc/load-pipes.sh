@@ -7,8 +7,8 @@ do
   do
     pipeName="pipe$j"
     fileName="$appName-$pipeName"
-
-    echo spin application save -f $fileName --config config
+    echo "app $i , pipe $j"
+    echo spin application save -f ../pipelines/$fileName.json --config config
   done  
 done  
 
