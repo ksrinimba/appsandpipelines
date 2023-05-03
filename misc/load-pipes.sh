@@ -3,7 +3,7 @@ for i in {1..100}
 do
   appName="loadapp$i"
 
-  for j in {1..4}
+  for j in {1..2}
   do
     pipeName="pipe$j"
     fileName="$appName-$pipeName"

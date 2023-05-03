@@ -38,7 +38,7 @@
   ],
   "triggers": [
     {
-      "cronExpression": "0 0/10 * 1/1 * ? *",
+      "cronExpression": "0 0/3 * 1/1 * ? *",
       "enabled": true,
       "type": "cron"
     }
