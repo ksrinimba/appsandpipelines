@@ -8,8 +8,8 @@ do
     pipeName="pipe$j"
     fileName="$appName-$pipeName"
     echo "app $i , pipe $j"
-    cp -r ../pipelines/$fileName.json . > modify.json
-    cat ../pipelines/$fileName.json
+    cp -r ../pipelines/$fileName.json .
+    mv $fileName.json modify.json
     cat modify.json
     sleep 1d
     cat modify.json | jq '.triggers[].enabled = "true"' > cronenabled.json
