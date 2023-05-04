@@ -8,6 +8,7 @@ do
     pipeName="pipe$j"
     fileName="$appName-$pipeName"
     echo "app $i , pipe $j"
+    pwd
     cp -r ../pipelines/$fileName.json > /tmp/appsandpipelines/misc/modify.json
     cat modify.json | jq '.triggers[].enabled = "true"' > cronenabled.json
     pipecron="0 0/$a * 1/1 * ? *"
