@@ -1,0 +1,25 @@
+{
+  "cloudProviders": "kubernetes",
+  "dataSources": {
+    "disabled": [],
+    "enabled": []
+  },
+  "description": "Application automatically created with simple  Note that Admin user is required for this application.",
+  "email": "support@opsmx.com",
+  "instanceLinks": [
+    {
+      "links": [
+        {
+          "path": "https://github.com/OpsMx/sample-pipelines",
+          "title": "help"
+        }
+      ],
+      "title": "Help and configuration"
+    }
+  ],
+  "instancePort": 80,
+  "lastModifiedBy": "srinivs@opsmx.io",
+  "name": "loadapp182",
+  "trafficGuards": [],
+  "user": "srinivas@opsmx.io"
+}

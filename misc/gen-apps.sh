@@ -1,5 +1,5 @@
 #Generate apps and pipelines
-for i in {1..100}
+for i in {100..1000}
 do
   appName="loadapp$i"
   jqStr=".name = \"$appName\""
