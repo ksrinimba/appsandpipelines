@@ -10,8 +10,6 @@ do
     echo "app $i , pipe $j"
     cp -r ../pipelines/$fileName.json .
     mv $fileName.json modify.json
-    cat modify.json
-    sleep 1d
     cat modify.json | jq '.triggers[].enabled = "true"' > cronenabled.json
     pipecron="0 0/$a * 1/1 * ? *"
     cat cronenabled.json | jq '.triggers[].cronExpression = "'"$pipecron"'"' > modified.json
