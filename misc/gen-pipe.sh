@@ -1,9 +1,9 @@
 #Generate pipelines
-for i in {101..1000}
+for i in {1..1000}
 do
   appName="loadapp$i"
 
-  for j in {1..2}
+  for j in {1..4}
   do
     pipeName="pipe$j"
     fileName="$appName-$pipeName"

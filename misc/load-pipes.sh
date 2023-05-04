@@ -1,5 +1,5 @@
 #Generate pipelines
-for i in {101..1000}
+for i in {1..1000}
 do
   appName="loadapp$i"
 
