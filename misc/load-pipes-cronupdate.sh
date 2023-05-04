@@ -8,8 +8,10 @@ do
     pipeName="pipe$j"
     fileName="$appName-$pipeName"
     echo "app $i , pipe $j"
-    pwd
-    cp -r ../pipelines/$fileName.json > /tmp/appsandpipelines/misc/modify.json
+    cp -r ../pipelines/$fileName.json . > modify.json
+    cat ../pipelines/$fileName.json
+    cat modify.json
+    sleep 1d
     cat modify.json | jq '.triggers[].enabled = "true"' > cronenabled.json
     pipecron="0 0/$a * 1/1 * ? *"
     cat cronenabled.json | jq '.triggers[].cronExpression = "'"$pipecron"'"' > modified.json
@@ -18,7 +20,3 @@ do
     a=$((a+1))
   done
 done
-
-
-
-
