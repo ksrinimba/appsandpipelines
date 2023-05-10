@@ -10,6 +10,8 @@ These are scripts that use spin-cli to uploaded the apps and pipelines generated
 
 **create-apps-pipes-job.yaml**:  This creates a pod that sleeps. It contains the required executables. The script that uses is in *-spinnaker-spin-pipeline-import  in a configMap.
 
+**Note: release name is assumed to be isd. if not, please edit the files accordingly**
+
 k apply -f isd-spinnaker-spin-pipeline-import-config.yaml
 
 k apply -f create-apps-pipes-job.yaml   # create the job that just sleeps
