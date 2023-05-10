@@ -2,6 +2,7 @@ This repo contains files generating and loading a large number of apps and pipel
 The procedure to upload these to spinnaker are below
 
 **gen-apps.sh** : Script to generate app-jsons and copy them into the "apps" folder
+
 **gen-pipe.sh** : Script to generate pipeline-jsons and copy them into the "pipelines" folder, note that the app-names need to match
 
 ### Procedure to update the apps and pipelines
@@ -9,14 +10,19 @@ These are scripts that use spin-cli to uploaded the apps and pipelines generated
 
 Checkout the pod here: https://github.com/OpsMx/sample-pipelines/blob/main/create-sample-job.yaml
 This creates a pod that uploads sample-apps during installation. The script that uses is in *-spinnaker-spin-pipeline-import  in a configMap.
+
 Modify the script so that it "sleeps infinity"
+
 **TODO**: create a special job-yaml that can be used directly
 
 Exec into the pod. it has git, spin-cli and other commands needed.
+
 In the /tmp/config folder you will find proceed files. spin-cli config and examples
 
 git clone this folder into /tmp
 
 **load-apps.sh** : this script calls spin-cli to upload the files from the app folder
+
 **load-pipes.sh** : this script calls spin-cli to upload the files from the pipelines folder
+
 **load-pipes-cronupdate.sh** : this script adds a cron-trigger the pipeline and uploads. This allows for pipelines to be modified so that the execute and load Spinnaker
