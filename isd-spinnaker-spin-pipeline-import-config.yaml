@@ -1,0 +1,115 @@
+apiVersion: v1
+data:
+  spin-pipeline-import.sh: |-
+    #!/bin/bash
+    echo "Waiting for all Spinnaker Services to come-up"
+    wait_period=0
+    while true
+    do
+    kubectl get po -n opsmx-isd -o jsonpath='{range .items[*]}{..metadata.name}{"\t"}{..containerStatuses..ready}{"\n"}{end}' > /tmp/inst.status
+    ## NON-HA
+    CLOUDDRIVER=$(grep spin-clouddriver /tmp/inst.status |grep -v deck | awk '{print $2}')
+    ECHO=$(grep spin-echo /tmp/inst.status | awk '{print $2}')
+    ## HA
+    CLOUDRO=$(grep spin-clouddriver-ro /tmp/inst.status |grep -v deck | awk '{print $2}')
+    CLOUDRODECK=$(grep spin-clouddriver-ro-deck /tmp/inst.status | awk '{print $2}')
+    CLOUDRW=$(grep spin-clouddriver-rw /tmp/inst.status | awk '{print $2}')
+    CLOUDCACHING=$(grep spin-clouddriver-caching /tmp/inst.status | awk '{print $2}')
+    DECK=$(grep spin-deck /tmp/inst.status | awk '{print $2}')
+    ECHOWORKER=$(grep spin-echo-worker /tmp/inst.status | awk '{print $2}')
+    ECHOSCHEDULER=$(grep spin-echo-scheduler  /tmp/inst.status | awk '{print $2}')
+    FRONT=$(grep spin-front /tmp/inst.status  | awk '{print $2}')
+    #GATE=$(grep spin-gate /tmp/inst.status | awk '{print $2}')
+    IGOR=$(grep spin-igor /tmp/inst.status | awk '{print $2}')
+    ORCA=$(grep spin-orca /tmp/inst.status | awk '{print $2}')
+    FIAT=$(grep spin-fiat /tmp/inst.status | awk '{print $2}')
+    #ROSCO=$(grep spin-rosco /tmp/inst.status | awk '{print $2}')
+    ## AUTOPILOT
+    SAPORGATE=$(grep sapor-gate /tmp/inst.status | awk '{print $2}')
+    OESGATE=$(grep oes-gate /tmp/inst.status | awk '{print $2}')
+    wait_period=$(($wait_period+10))
+    READYBASIC=$( [ "$DECK" == "true" ] && [ "$CLOUDCACHING" == "true" ] && [ "$CLOUDRO" == "true" ] && [ "$CLOUDRW" == "true" ] && [ "$CLOUDRODECK" == "true" ] && [ "$FRONT" == "true" ] && [ "$ORCA" == "true" ] && [ "$ECHOWORKER" == "true" ] && [ "$ECHOSCHEDULER" == "true" ] && [ "$SAPORGATE" == "true" ] && [ "$OESGATE" == "true" ];  echo $(($? == 0)) )
+    READY=$( [ $READYBASIC == 1 ] && [ "$FIAT" == "true" ]; echo $(($? == 0)) )
+    if [ $READY == 1 ];
+    then
+        echo "Spinnaker and OES is Installed and ready"
+        mkdir -p /tmp/config/git/
+        git -c http.sslVerify=false clone https://github.com/OpsMx/sample-pipelines.git /tmp/config/git/
+        if [[ $? != 0 ]]; then
+        echo "ERROR: Failed while cloning the repo https://github.com/OpsMx/sample-pipelines.git"
+          exit 1
+        fi
+        echo "processing.........."
+        sleep 100
+        cd /tmp/config/git
+        cp -p /tmp/config/spin/config .
+        ### remove commected line in file
+        grep -v "#" create-app.sh > removecomment.sh
+        sed 's/$/ --config config/' removecomment.sh > create-app1.sh
+        #### Loop begins to save the json if fails it tries for 3 times
+        INPUT=$(sed -n '$=' create-app1.sh)
+        for i in $(seq 1 $INPUT); do
+        command=$(sed -n "$i"p create-app1.sh);
+
+        #####################################################################################3
+        #####################################################################################3
+        #####################################################################################3
+        echo "Sleeping for ever..."
+        sleep infinity
+
+
+        $command > /dev/null 2>&1
+        if [[ $? != 0 ]]; then
+          n=0
+          until [ "$n" -ge 3 ]
+          do
+           echo Retrying.....
+           $command > /dev/null 2>&1
+            if [[ $? != 0 ]]; then
+              echo "ERROR: Failed to save the Application/Pipeline using the spincli. Please check the spincli configuration in isd-spinnaker-spin-config  secret or check the pipelinejson"
+              echo "$command"
+              #exit 1
+              if [[ "$i" == 3 ]]; then
+              echo "ERROR: Failed to save the Application/Pipeline using the spincli. Please check the spincli configuration in isd-spinnaker-spin-config  secret or check the pipelinejson"
+              echo "$command"
+              exit 1
+              fi
+            else
+              echo "$command"
+              echo "Saved successfully"
+            fi
+           n=$((n+1))
+           sleep 5
+         done
+        else
+          echo "$command"
+          echo "Saved successfully"
+        fi
+        done
+        break
+    else
+        if [ $wait_period -gt 180000 ];
+        then
+            echo "Script is timed out as the Spinnaker is not ready in 30 min......."
+            break
+        else
+            echo "Waiting for Spinnaker services to be ready...sleeping for ever"
+            sleep infinity
+        fi
+    fi
+    done
+kind: ConfigMap
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","data":{"spin-pipeline-import.sh":"#!/bin/bash\necho \"Waiting for all Spinnaker Services to come-up\"\nwait_period=0\nwhile true\ndo\nkubectl get po -n opsmx-isd -o jsonpath='{range .items[*]}{..metadata.name}{\"\\t\"}{..containerStatuses..ready}{\"\\n\"}{end}' \u003e /tmp/inst.status\n## NON-HA\nCLOUDDRIVER=$(grep spin-clouddriver /tmp/inst.status |grep -v deck | awk '{print $2}')\nECHO=$(grep spin-echo /tmp/inst.status | awk '{print $2}')\n## HA\nCLOUDRO=$(grep spin-clouddriver-ro /tmp/inst.status |grep -v deck | awk '{print $2}')\nCLOUDRODECK=$(grep spin-clouddriver-ro-deck /tmp/inst.status | awk '{print $2}')\nCLOUDRW=$(grep spin-clouddriver-rw /tmp/inst.status | awk '{print $2}')\nCLOUDCACHING=$(grep spin-clouddriver-caching /tmp/inst.status | awk '{print $2}')\nDECK=$(grep spin-deck /tmp/inst.status | awk '{print $2}')\nECHOWORKER=$(grep spin-echo-worker /tmp/inst.status | awk '{print $2}')\nECHOSCHEDULER=$(grep spin-echo-scheduler  /tmp/inst.status | awk '{print $2}')\nFRONT=$(grep spin-front /tmp/inst.status  | awk '{print $2}')\n#GATE=$(grep spin-gate /tmp/inst.status | awk '{print $2}')\nIGOR=$(grep spin-igor /tmp/inst.status | awk '{print $2}')\nORCA=$(grep spin-orca /tmp/inst.status | awk '{print $2}')\nFIAT=$(grep spin-fiat /tmp/inst.status | awk '{print $2}')\n#ROSCO=$(grep spin-rosco /tmp/inst.status | awk '{print $2}')\n## AUTOPILOT\nSAPORGATE=$(grep sapor-gate /tmp/inst.status | awk '{print $2}')\nOESGATE=$(grep oes-gate /tmp/inst.status | awk '{print $2}')\nwait_period=$(($wait_period+10))\nREADYBASIC=$( [ \"$DECK\" == \"true\" ] \u0026\u0026 [ \"$CLOUDCACHING\" == \"true\" ] \u0026\u0026 [ \"$CLOUDRO\" == \"true\" ] \u0026\u0026 [ \"$CLOUDRW\" == \"true\" ] \u0026\u0026 [ \"$CLOUDRODECK\" == \"true\" ] \u0026\u0026 [ \"$FRONT\" == \"true\" ] \u0026\u0026 [ \"$ORCA\" == \"true\" ] \u0026\u0026 [ \"$ECHOWORKER\" == \"true\" ] \u0026\u0026 [ \"$ECHOSCHEDULER\" == \"true\" ] \u0026\u0026 [ \"$SAPORGATE\" == \"true\" ] \u0026\u0026 [ \"$OESGATE\" == \"true\" ];  echo $(($? == 0)) )\nREADY=$( [ $READYBASIC == 1 ] \u0026\u0026 [ \"$FIAT\" == \"true\" ]; echo $(($? == 0)) )\nif [ $READY == 1 ];\nthen\n    echo \"Spinnaker and OES is Installed and ready\"\n    mkdir -p /tmp/config/git/\n    git -c http.sslVerify=false clone https://github.com/OpsMx/sample-pipelines.git /tmp/config/git/\n    if [[ $? != 0 ]]; then\n    echo \"ERROR: Failed while cloning the repo https://github.com/OpsMx/sample-pipelines.git\"\n      exit 1\n    fi\n    echo \"processing..........\"\n    sleep 100\n    cd /tmp/config/git\n    cp -p /tmp/config/spin/config .\n    ### remove commected line in file\n    grep -v \"#\" create-app.sh \u003e removecomment.sh\n    sed 's/$/ --config config/' removecomment.sh \u003e create-app1.sh\n    #### Loop begins to save the json if fails it tries for 3 times\n    INPUT=$(sed -n '$=' create-app1.sh)\n    for i in $(seq 1 $INPUT); do\n    command=$(sed -n \"$i\"p create-app1.sh);\n    $command \u003e /dev/null 2\u003e\u00261\n    if [[ $? != 0 ]]; then\n      n=0\n      until [ \"$n\" -ge 3 ]\n      do\n       echo Retrying.....\n       $command \u003e /dev/null 2\u003e\u00261\n        if [[ $? != 0 ]]; then\n          echo \"ERROR: Failed to save the Application/Pipeline using the spincli. Please check the spincli configuration in isd-spinnaker-spin-config  secret or check the pipelinejson\"\n          echo \"$command\"\n          #exit 1\n          if [[ \"$i\" == 3 ]]; then\n          echo \"ERROR: Failed to save the Application/Pipeline using the spincli. Please check the spincli configuration in isd-spinnaker-spin-config  secret or check the pipelinejson\"\n          echo \"$command\"\n          exit 1\n          fi\n        else\n          echo \"$command\"\n          echo \"Saved successfully\"\n        fi\n       n=$((n+1))\n       sleep 5\n     done\n    else\n      echo \"$command\"\n      echo \"Saved successfully\"\n    fi\n    done\n    break\nelse\n    if [ $wait_period -gt 1800 ];\n    then\n        echo \"Script is timed out as the Spinnaker is not ready in 30 min.......\"\n        break\n    else\n        echo \"Waiting for Spinnaker services to be ready\"\n        sleep 1m\n    fi\nfi\ndone"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"app":"isd-spinnaker","chart":"spinnaker-2.2.3","heritage":"Helm","release":"isd"},"name":"isd-spinnaker-spin-pipeline-import","namespace":"opsmx-isd"}}
+  creationTimestamp: "2023-02-17T05:00:43Z"
+  labels:
+    app: isd-spinnaker
+    chart: spinnaker-2.2.3
+    heritage: Helm
+    release: isd
+  name: isd-spinnaker-spin-pipeline-import
+  namespace: opsmx-isd
+  resourceVersion: "3078923"
+  uid: 9d46f3b3-567f-447c-b956-9059649fdeae
