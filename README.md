@@ -5,4 +5,6 @@ Repo to create a large number of applications, pipelines and clouddriver-account
 
 **misc** - contains scripts for generating and loading apps and pipelines, based in **base*.json**
 
-**apps, pipelines**; these contain the generated app and pipeline files.
+**apps, pipelines**; these contain the generated app and pipeline files and execute them
+
+**service-acc-creation**: Instructions creating large number of service accounts.
