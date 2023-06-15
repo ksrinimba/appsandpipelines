@@ -1,0 +1,29 @@
+{
+  "application": "srinitest1",
+  "index": 2,
+  "keepWaitingPipelines": false,
+  "lastModifiedBy": "r_puranam@apple.com",
+  "limitConcurrent": true,
+  "name": "pipe44",
+  "roles": [
+    "7793940"
+  ],
+  "spelEvaluator": "v4",
+  "stages": [
+    {
+      "name": "Wait",
+      "refId": "1",
+      "requisiteStageRefIds": [],
+      "type": "wait",
+      "waitTime": 30
+    }
+  ],
+  "triggers": [
+    {
+      "enabled": true,
+      "runAsUser": "304118f9-59b7-4a83-904c-db5e7d6e4af7@managed-service-account",
+      "source": "group4",
+      "type": "webhook"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+ "application": "srinitest1",
+ "index": 2,
+ "keepWaitingPipelines": false,
+ "lastModifiedBy": "r_puranam@apple.com",
+ "limitConcurrent": true,
+ "name": "testing44",
+ "roles": [],
+ "spelEvaluator": "v4",
+ "stages": [
+  {
+   "alias": "preconfiguredJob",
+   "name": "pipelineSyncToGit (Don't Use)",
+   "parameters": {
+    "spinnaker_applications": "test",
+    "spinnaker_pipelines": ""
+   },
+   "refId": "1",
+   "requisiteStageRefIds": [],
+   "type": "pipelineSyncToGit"
+  }
+ ],
+ "triggers": [],
+}

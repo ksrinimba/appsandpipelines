@@ -1,5 +1,7 @@
-for i in {1001..1010}
+for i in {1..10}
 do
    echo "Loading app $i"
-   spin application save -f ../apps/loadapp$i.json --config config
+   spin -k app save -f ../apps/loadapp$i.json --config config --retry-timeout 1200 &
 done
+echo sleeping....
+sleep 3600

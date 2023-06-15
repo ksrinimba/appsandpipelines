@@ -1,0 +1,14 @@
+curl -ks -m 10 -X POST https://spincloudcd-api.corp.apple.com/pipelines/sampleapp/1838deploy1-7817792 --cert ./client-7817792.crt --key ./client-7817792.key -H "content-type:application/json"
+
+af568f2a3ac034efc8fea2b6ca9f7c66-bf3c6b9b52fd3b94.elb.us-west-2.amazonaws.com
+
+srinistarttest
+https://spincloudcd-dev-gate-uswe2.corp.apple.com/webhooks/webhook/srinistarttest
+https://af568f2a3ac034efc8fea2b6ca9f7c66-bf3c6b9b52fd3b94.elb.us-west-2.amazonaws.com/webhooks/webhook/srinistarttest
+https://af568f2a3ac034efc8fea2b6ca9f7c66-bf3c6b9b52fd3b94.elb.us-west-2.amazonaws.com/webhooks/webhook/srinistarttest
+curl -ks -m 10 -X POST https://af568f2a3ac034efc8fea2b6ca9f7c66-bf3c6b9b52fd3b94.elb.us-west-2.amazonaws.com/webhooks/webhook/srinistartest --cert ./client-7817792.crt --key ./client-7817792.key -H "content-type:application/json"
+Payload Constraints 
+Key	Value	
+https://spincloudcd-api.corp.apple.com/pipelines/sampleapp/1838deploy1-7817792
+
+ https://spincloudcd-dev-gate-uswe2.corp.apple.com/webhooks/webhook/srinistarttest

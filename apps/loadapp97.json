@@ -20,6 +20,17 @@
   "instancePort": 80,
   "lastModifiedBy": "srinivs@opsmx.io",
   "name": "loadapp97",
+  "permissions": {
+    "EXECUTE": [
+      "7793940"
+    ],
+    "READ": [
+      "7793940"
+    ],
+    "WRITE": [
+      "7793940"
+    ]
+  },
   "trafficGuards": [],
   "user": "srinivas@opsmx.io"
 }

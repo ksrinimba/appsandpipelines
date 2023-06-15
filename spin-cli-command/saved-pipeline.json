@@ -1,0 +1,26 @@
+{
+ "application": "test",
+ "id": "5f8846d6-236f-42a5-abbf-a78a6e7d3d81",
+ "index": 2,
+ "keepWaitingPipelines": false,
+ "lastModifiedBy": "r_puranam@apple.com",
+ "limitConcurrent": true,
+ "name": "testing3",
+ "roles": [],
+ "spelEvaluator": "v4",
+ "stages": [
+  {
+   "alias": "preconfiguredJob",
+   "name": "pipelineSyncToGit (Don't Use)",
+   "parameters": {
+    "spinnaker_applications": "test",
+    "spinnaker_pipelines": ""
+   },
+   "refId": "1",
+   "requisiteStageRefIds": [],
+   "type": "pipelineSyncToGit"
+  }
+ ],
+ "triggers": [],
+ "updateTs": "1662064459927"
+}

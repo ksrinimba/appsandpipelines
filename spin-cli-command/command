@@ -1,0 +1,7 @@
+set -x
+spin -k pi save -f pipeline-1.json --retry-timeout 300 &
+spin -k pi save -f pipeline-2.json --retry-timeout 300 &
+spin -k pi save -f pipeline-3.json --retry-timeout 300 &
+spin -k pi save -f pipeline-4.json --retry-timeout 300 &
+spin -k pi save -f pipeline-5.json --retry-timeout 300 &
+sleep 3600
