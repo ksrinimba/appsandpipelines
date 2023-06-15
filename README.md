@@ -8,3 +8,11 @@ Repo to create a large number of applications, pipelines and clouddriver-account
 **apps, pipelines**; these contain the generated app and pipeline files and execute them
 
 **service-acc-creation**: Instructions creating large number of service accounts.
+
+**load-test**: Scripts to run role-sync many times, trigged multiple pipelines using curl
+
+**spin-cli-command**: spin-cli and supporting files for saving pipelines
+
+**jmeter**: jmeter for simulating users/executions
+
+**apps, pipelines**: folders for holding generated app and pipeline JSONs
