@@ -6,7 +6,7 @@
  "limitConcurrent": true,
  "name": "testing41",
  "roles": [
-    "7793940"
+    "testing41"
   ],
  "spelEvaluator": "v4",
  "stages": [
@@ -21,7 +21,6 @@
   "triggers": [
     {
       "enabled": true,
-      "runAsUser": "304118f9-59b7-4a83-904c-db5e7d6e4af7@managed-service-account",
       "source": "srinitest1-pipe1",
       "type": "webhook"
     }
