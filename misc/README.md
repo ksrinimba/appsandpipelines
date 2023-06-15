@@ -30,3 +30,5 @@ Now we have all the scripts, apps, pipelines and spin-cli config required
 **load-pipes-cronupdate.sh** : this script adds a cron-trigger the pipeline and uploads. This allows for pipelines to be modified so that the execute and load Spinnaker
   
 Execute the scripts. If you need to edit anything, vi is NOT available. Edit it in repo, push and git pull inside the pod.
+  
+  gen-role-not-tested-pipe-with-role.json - This is a pipeline, where can need to substitue role and 
